@@ -1,0 +1,34 @@
+# Ignorar a pasta de segredos do Streamlit
+.streamlit/secrets.toml
+
+# Ignora o ambiente virtual
+.venv/
+venv/
+env/
+
+# Ignora arquivos temporários de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignora pastas de cache e Jupyter
+.ipynb_checkpoints/
+.jupyter/
+
+# Ignora arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Ignora logs e configs pessoais
+*.log
+*.env
+secrets.toml
+
+# Ignora diretórios de build e de cache
+build/
+dist/
+*.egg-info/
+
+# Ignora arquivo temporário do VSCode
+.vscode/
