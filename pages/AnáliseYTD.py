@@ -195,11 +195,21 @@ padroniza_ramo = {
     "FORNECEDOR": "FORNECEDOR",
     "METALGRAFIA": "METALGRAFIA",
     "NÃO INFORMADO": "NÃO INFORMADO",
+    "NONE": "NÃO INFORMADO",
     "OFFSET": "OFFSET",
     "OFFSET REVENDA": "REVENDA",  # Para agrupar juntos, opcional!
     "REVENDA": "REVENDA",
 }
 df_all["ramo_categoria"] = df_all["ramo_categoria"].replace(padroniza_ramo)
+
+# Dicionário tIPO para padronização MX e BR nos nomes das BCB
+padroniza_bcb = {
+    "BCB ADVANCED 1.96": "BCB ADVANCED",
+    "BCB ADVANCED V4": "BCB ADVANCED",
+}
+
+df_all["tipo"] = df_all["tipo"].replace(padroniza_bcb)
+
 
 # Agora df_all substitui o df nas próximas etapas
 df = df_all
