@@ -6,7 +6,7 @@ from sqlalchemy import create_engine, text
 import matplotlib.pyplot as plt
 from babel.numbers import format_currency, format_decimal, format_percent
 from babel.dates import format_date, format_datetime
-from urllib.parse import quote_plus   # para codificar a senha de forma segura
+from urllib.parse import quote_plus  # para codificar a senha de forma segura
 
 
 # --- Configuração da Página ---
@@ -32,6 +32,7 @@ def get_engine():
 
 engine = get_engine()
 
+
 # --- Conexão Segura com o banco do México ---
 @st.cache_resource
 def get_engine_mexico():
@@ -51,6 +52,7 @@ def get_engine_mexico():
         pool_pre_ping=True,  # Garante conexão estável
     )
     return engine_mx
+
 
 engine_mx = get_engine_mexico()
 
@@ -93,11 +95,13 @@ WHERE emissao > '2017-01-01'
 ORDER BY emissao;
 """
 
+
 @st.cache_data
 def carregar_dados_mexico(query):
     with engine_mx.connect() as conn:
         df_mx = pd.read_sql_query(text(query), conn)
     return df_mx
+
 
 df_mx = carregar_dados_mexico(query_vendas_mx)
 
@@ -112,14 +116,36 @@ if "codigo_cliente" in df_mx.columns:
 
 # Definições por categoria
 colunas_numericas = [
-    "qtde", "m2", "total_r", "ptax_negociado", "ptax_valor", 
-    "total_us", "us_m2", "novo_comum", "novo_trelleborg", "ano", "mes"
+    "qtde",
+    "m2",
+    "total_r",
+    "ptax_negociado",
+    "ptax_valor",
+    "total_us",
+    "us_m2",
+    "novo_comum",
+    "novo_trelleborg",
+    "ano",
+    "mes",
 ]
 colunas_datas = ["emissao", "ptax_data"]
 colunas_string = [
-    "codpro", "codigo_cliente", "nota_fiscal", "empresa", "filial", "razao_social", 
-    "cidade", "uf", "nome_representante", "apelido_representante", "produto", 
-    "fabricante", "familia", "tipo", "unimed", "ramo_categoria"
+    "codpro",
+    "codigo_cliente",
+    "nota_fiscal",
+    "empresa",
+    "filial",
+    "razao_social",
+    "cidade",
+    "uf",
+    "nome_representante",
+    "apelido_representante",
+    "produto",
+    "fabricante",
+    "familia",
+    "tipo",
+    "unimed",
+    "ramo_categoria",
 ]
 
 # Pega os DataFrames a tratar — Brasil e México
@@ -150,7 +176,7 @@ df_all = pd.concat([df_br, df_mx], ignore_index=True)
 for col in df_all.select_dtypes(include="object").columns:
     df_all[col] = df_all[col].astype(str).str.upper().str.strip()
 
-#ajusta campo ramo_categoria
+# ajusta campo ramo_categoria
 df_all["ramo_categoria"] = df_all["ramo_categoria"].fillna("NÃO INFORMADO")
 
 # Garante tudo em caixa alta, sem espaços extras
@@ -598,23 +624,25 @@ df_para_exibir["emissao"] = df_para_exibir["emissao"].dt.strftime("%d/%m/%Y")
 # 3. Seleciona e renomeia as colunas
 df_para_exibir = df_para_exibir[
     [
-        "codpro",
-        "razao_social",
         "filial",
+        "ramo_categoria",
+        "razao_social",
         "apelido_representante",
         "emissao",
         "tipo",
+        "codpro",
         "m2",
         "total_us",
     ]
 ].rename(
     columns={
-        "codpro": "Cód Produto",
-        "razao_social": "Cliente",
         "filial": "Filial",
+        "ramo_categoria": "Mercado",
+        "razao_social": "Cliente",
         "apelido_representante": "Representante",
         "emissao": "Data Emissão",
         "tipo": "Produto",
+        "codpro": "Cód Produto",
         "m2": "m²",
         "total_us": "Valor (US$)",
     }
