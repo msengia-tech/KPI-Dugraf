@@ -475,21 +475,25 @@ df_para_exibir["emissao"] = df_para_exibir["emissao"].dt.strftime("%d/%m/%Y")
 # 3. Seleciona e renomeia as colunas
 df_para_exibir = df_para_exibir[
     [
-        "codpro",
+        "filial",
+        "ramo_categoria",
         "razao_social",
         "apelido_representante",
         "emissao",
         "tipo",
+        "codpro",
         "m2",
         "total_us",
     ]
 ].rename(
     columns={
-        "codpro": "Cód Produto",
+        "filial": "Filial",
+        "ramo_categoria": "Mercado",
         "razao_social": "Cliente",
         "apelido_representante": "Representante",
         "emissao": "Data Emissão",
         "tipo": "Produto",
+        "codpro": "Cód Produto",
         "m2": "m²",
         "total_us": "Valor (US$)",
     }
