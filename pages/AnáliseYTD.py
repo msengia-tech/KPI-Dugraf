@@ -329,9 +329,9 @@ else:
 
 # Converte as datas do input para datetime para a comparação
 data_inicio_p1_dt = pd.to_datetime(data_inicio_p1)
-data_fim_p1_dt = pd.to_datetime(data_fim_p1)
+data_fim_p1_dt = pd.to_datetime(data_fim_p1) + pd.Timedelta(days=1) - pd.Timedelta(seconds=1)
 data_inicio_p2_dt = pd.to_datetime(data_inicio_p2)
-data_fim_p2_dt = pd.to_datetime(data_fim_p2)
+data_fim_p2_dt = pd.to_datetime(data_fim_p2) + pd.Timedelta(days=1) - pd.Timedelta(seconds=1)
 
 # O dataframe principal é filtrado com base nas seleções feitas na barra lateral.
 df_filtrado = df[
