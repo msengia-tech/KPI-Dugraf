@@ -325,13 +325,31 @@ else:
         "Produtos", produtos_disponiveis, default=None
     )
 
+# Filtro por Tipo com opção "Selecionar Todos"
+selecionar_todos_tipos = st.sidebar.checkbox("Selecionar Todos os Tipos", value=True)
+lista_tipos = [seg for seg in df["tipo"].unique() if pd.notna(seg) and str(seg).strip()]
+tipos_disponiveis = sorted(lista_tipos)
+
+if selecionar_todos_tipos:
+    tipos_selecionados = st.sidebar.multiselect(
+        "Tipo",
+        tipos_disponiveis,
+        default=tipos_disponiveis,
+    )
+else:
+    tipos_selecionados = st.sidebar.multiselect("Tipo", tipos_disponiveis, default=None)
+
 # --- Filtragem do DataFrame ---
 
 # Converte as datas do input para datetime para a comparação
 data_inicio_p1_dt = pd.to_datetime(data_inicio_p1)
-data_fim_p1_dt = pd.to_datetime(data_fim_p1) + pd.Timedelta(days=1) - pd.Timedelta(seconds=1)
+data_fim_p1_dt = (
+    pd.to_datetime(data_fim_p1) + pd.Timedelta(days=1) - pd.Timedelta(seconds=1)
+)
 data_inicio_p2_dt = pd.to_datetime(data_inicio_p2)
-data_fim_p2_dt = pd.to_datetime(data_fim_p2) + pd.Timedelta(days=1) - pd.Timedelta(seconds=1)
+data_fim_p2_dt = (
+    pd.to_datetime(data_fim_p2) + pd.Timedelta(days=1) - pd.Timedelta(seconds=1)
+)
 
 # O dataframe principal é filtrado com base nas seleções feitas na barra lateral.
 df_filtrado = df[
@@ -339,6 +357,7 @@ df_filtrado = df[
     & (df["ramo_categoria"].isin(segmentos_selecionadas))
     & (df["apelido_representante"].isin(representantes_selecionados))
     & (df["produto"].isin(produtos_selecionados))
+    & (df["tipo"].isin(tipos_selecionados))
 ]
 
 
