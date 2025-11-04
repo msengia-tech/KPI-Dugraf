@@ -214,7 +214,7 @@ padroniza_uv_pro = {
 }
 
 df_all["tipo"] = df_all["tipo"].replace(padroniza_uv_pro)
-
+df_all["tipo"] = df_all["tipo"].replace(padroniza_bcb)
 
 # Agora df_all substitui o df nas próximas etapas
 df = df_all
