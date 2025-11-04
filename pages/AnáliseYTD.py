@@ -569,6 +569,90 @@ if not df_p2.empty:
     # --- Gráfico de Ranking de vendedores e evolução mensal ---
     st.subheader("Evolução do Faturamento de m² (Período Atual)")
 
+    # --- Gráficos 4 e 5: Distribuição de m2 por Filial e por Segmento ---
+
+    # Cria duas colunas para os gráficos de pizza
+    col_pizza1, col_pizza2 = st.columns(2)
+
+    # --- Gráfico 4: Distribuição de m2 por Filial ---
+    with col_pizza1:
+        df_pizza_filial = df_p2.copy()
+
+        # Se existirem filtros aplicados, isso já vai refletir aqui
+        distribuicao_filial = (
+            df_pizza_filial.groupby("filial")["m2"]
+            .sum()
+            .reset_index()
+            .sort_values("m2", ascending=False)
+        )
+
+        # 🎨 Dicionário de cores personalizadas por filial
+        cores_filiais = {
+            "SC": "#E61B23",
+            "SP": "#00A0E3",
+            "MX": "#006545",
+            "MG": "#9b9ca3",
+        }
+
+        grafico_pizza_filial = px.pie(
+            distribuicao_filial,
+            names="filial",
+            values="m2",
+            title="Distribuição de Faturamento (m²) por Filial",
+            hole=0.3,  # se quiser estilo donut, senão use hole=0
+            color="filial",
+            color_discrete_map=cores_filiais,  # 👈 Aqui você define cor por cada filial
+        )
+
+        grafico_pizza_filial.update_traces(
+            textinfo="percent+label",
+            hovertemplate="<b>%{label}</b><br>m²: %{value:,.0f}<br>Percentual: %{percent}",
+        )
+
+        grafico_pizza_filial.update_layout(title_x=0.1)
+        st.plotly_chart(grafico_pizza_filial, use_container_width=True)
+
+    # --- Gráfico 5: Distribuição de m2 por Segmento (respeitando o filtro atual) ---
+    with col_pizza2:
+        df_pizza_segmento = df_p2.copy()
+
+        # Se você já tem um filtro de segmento aplicado antes deste ponto, ele será respeitado automaticamente
+        distribuicao_segmento = (
+            df_pizza_segmento.groupby("ramo_categoria")["m2"]
+            .sum()
+            .reset_index()
+            .sort_values("m2", ascending=False)
+        )
+
+        # 🎨 Dicionário de cores personalizadas por segmento
+        cores_segmentos = {
+            "DIGITAL": "#A15895",
+            "DRY OFFSET": "#E61B23",
+            "FORNECEDOR": "#a19558",
+            "METALGRAFIA": "#006545",
+            "OFFSET": "#00A0E3",
+            "REVENDA": "#587aa1",
+            "NÃO INFORMADO": "#9b9ca3",
+        }
+
+        grafico_pizza_segmento = px.pie(
+            distribuicao_segmento,
+            names="ramo_categoria",
+            values="m2",
+            title="Distribuição de Faturamento (m²) por Segmento",
+            hole=0.3,
+            color="ramo_categoria",
+            color_discrete_map=cores_segmentos,  # 👈 Aqui você define cor por cada filial
+        )
+
+        grafico_pizza_segmento.update_traces(
+            textinfo="percent+label",
+            hovertemplate="<b>%{label}</b><br>m²: %{value:,.0f}<br>Percentual: %{percent}",
+        )
+
+        grafico_pizza_segmento.update_layout(title_x=0.1)
+        st.plotly_chart(grafico_pizza_segmento, use_container_width=True)
+
     col_graf3, col_graf4 = st.columns(2)
 
     # --- Gráfico 3 evolução mensal ---
