@@ -77,7 +77,7 @@ dugraf_dashboard_comercial
 WHERE 
 codigo_cliente NOT IN (12977,14371,15140,94,19194,18978) AND
 nota_fiscal NOT IN (14548,14549,14550,14552,14556,14539,25420, 12237, 12254, 25961, 26049, 27266, 27403, 17052, 28578, 28416 , 17585, 17877, 17950) AND
-emissao > '2017-01-01'
+emissao > '01/01/2017 00:00:00'
 
 order by emissao
 """
